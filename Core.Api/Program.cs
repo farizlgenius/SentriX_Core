@@ -1,4 +1,7 @@
 
+using Core.Api.Middlewares;
+using Core.Api.Settings;
+
 namespace Core.Api;
 
 public class Program
@@ -7,18 +10,46 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // ==========================
+        // Setting Routing option
+        // ==========================
+        builder.Services.AddRouting(options =>
+        {
+            options.LowercaseUrls = true;
+            options.LowercaseQueryStrings = true; // optional
+        });
+
+        // ==========================
+        // Swagger Setting
+        // ==========================
+        SwaggerSetting.Swagger(builder);
+
+        // ==========================
+        // Database connection
+        // ==========================
+        DbConnectionSetting.DatabaseConnectionHelper(builder);
+
+        // ==========================
+        // DI Setting
+        // ==========================
+        DISetting.DependencyInjectionSetting(builder);
+
         // Add services to the container.
 
         builder.Services.AddControllers();
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        builder.Services.AddOpenApi();
 
         var app = builder.Build();
+
+        /// ==========================
+        /// Global Exception Handling Middleware
+        /// ==========================
+        app.UseMiddleware<GlobalExceptionMiddleware>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         app.UseHttpsRedirection();

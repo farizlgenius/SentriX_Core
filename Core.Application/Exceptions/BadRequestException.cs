@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.Api.Exceptions;
+namespace Core.Application.Exceptions;
 
 public sealed class BadRequestException : Exception
 {

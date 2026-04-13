@@ -1,7 +1,7 @@
 using System;
 using System.Net;
-using Core.Api.Exceptions;
 using Core.Application.DTOs;
+using Core.Application.Exceptions;
 
 namespace Core.Api.Middlewares;
 
