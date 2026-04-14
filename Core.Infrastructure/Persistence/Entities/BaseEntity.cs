@@ -7,15 +7,21 @@ public class BaseEntity
 {
   [Key]
   public int id { get; set; }
+  public string name { get; set; } = string.Empty;
+  public int location_id { get; set; }
   public DateTime created_at { get; set; } = DateTime.UtcNow;
   public DateTime updated_at { get; set; } = DateTime.UtcNow;
   public bool is_active { get; set; } = true;
 
   public BaseEntity() { }
-  public BaseEntity(DateTime created, DateTime updated, bool active)
+
+  public void Disabled()
   {
-    this.created_at = created;
-    this.updated_at = updated;
-    this.is_active = active;
+    this.is_active = false;
+  }
+
+  public void Enabled()
+  {
+    this.is_active = true;
   }
 }

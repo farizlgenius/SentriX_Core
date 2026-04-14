@@ -5,14 +5,11 @@ namespace Core.Infrastructure.Persistence.Entities;
 
 public sealed class Device : BaseEntity
 {
-  public string name { get; set; } = string.Empty;
   public string serial_number { get; set; } = string.Empty;
   public string mac { get; set; } = string.Empty;
   public DeviceType type { get; set; } = DeviceType.UNKNOWN;
   public string metadata { get; set; } = string.Empty;
 
-  // Relation
-  public int location_id { get; set; }
 
   public Device() { }
 

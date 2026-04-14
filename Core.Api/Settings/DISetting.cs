@@ -14,12 +14,14 @@ public class DISetting
     // Adding Repository
     // ==========================
     builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+    builder.Services.AddScoped<ICardFormatRepository, CardFormatRepository>();
 
 
     // ==========================
     // Adding Service
     // ==========================
     builder.Services.AddScoped<IDeviceService, DeviceService>();
+    builder.Services.AddScoped<ICardFormatService, CardFormatService>();
 
 
     // ==========================

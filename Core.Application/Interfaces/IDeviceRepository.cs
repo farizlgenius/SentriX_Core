@@ -10,5 +10,4 @@ public interface IDeviceRepository : IBaseRepository<DeviceDto, Device>
   Task<bool> IsAnyMacExceptIdAsync(string Mac, int Id);
   Task<bool> IsAnySerialAsync(string Serial);
   Task<bool> IsAnySerialExceptIdAsync(string Serial, int Id);
-  Task<bool> IsAnyIdAsync(int Id);
 }

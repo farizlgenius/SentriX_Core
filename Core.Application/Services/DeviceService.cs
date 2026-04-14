@@ -15,6 +15,9 @@ public class DeviceService(IDeviceRepository repo) : IDeviceService
     if (string.IsNullOrWhiteSpace(dto.Name))
       throw new BadRequestException(ResponseMessage.NameEmpty);
 
+    if (await repo.IsAnyNameExceptLocationIdAsync(dto.Name, dto.LocationId))
+      throw new BadRequestException(ResponseMessage.DuplicatedName);
+
     if (await repo.IsAnyMacAsync(dto.Mac))
       throw new BadRequestException(ResponseMessage.DuplicatedMac);
 

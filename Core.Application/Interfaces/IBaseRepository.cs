@@ -9,4 +9,7 @@ public interface IBaseRepository<X, Y>
   Task<X> CreateAsync(Y domain);
   Task<X> UpdateAsync(Y domain);
   Task<X> DeleteByIdAsync(int id);
+  Task<bool> IsAnyNameExceptIdAsync(string Name, int Id);
+  Task<bool> IsAnyIdAsync(int Id);
+  Task<bool> IsAnyNameExceptLocationIdAsync(string Name, int LocationId);
 }
