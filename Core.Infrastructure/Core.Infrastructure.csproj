@@ -10,7 +10,6 @@
     <Folder Include="Helpers/" />
     <Folder Include="Persistence/" />
     <Folder Include="Persistence/Entities/" />
-    <Folder Include="Publisher/" />
     <Folder Include="Repositories/" />
   </ItemGroup>
 

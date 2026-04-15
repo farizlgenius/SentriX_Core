@@ -20,6 +20,12 @@ public class Program
         });
 
         // ==========================
+        // Read Config from application.json
+        // ==========================
+        ReadConfigSetting.ReadConfig(builder);
+
+
+        // ==========================
         // Swagger Setting
         // ==========================
         SwaggerSetting.Swagger(builder);

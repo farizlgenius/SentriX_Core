@@ -10,7 +10,7 @@ public sealed class Device
   public string Name { get; private set; } = string.Empty;
   public string SerialNumber { get; private set; } = string.Empty;
   public string Mac { get; private set; } = string.Empty;
-  public DeviceType Type { get; private set; } = DeviceType.AERO;
+  public DeviceType Type { get; private set; } = DeviceType.aero;
   public int LocationId { get; private set; }
   public string Metadata { get; private set; } = string.Empty;
 

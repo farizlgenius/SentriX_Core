@@ -2,6 +2,8 @@ using System;
 using Core.Api.Middlewares;
 using Core.Application.Interfaces;
 using Core.Application.Services;
+using Core.Infrastructure.Messaging;
+using Core.Infrastructure.Publisher;
 using Core.Infrastructure.Repositories;
 
 namespace Core.Api.Settings;
@@ -28,6 +30,8 @@ public class DISetting
     // Custom Service
     // ==========================
     builder.Services.AddTransient<GlobalExceptionMiddleware>();
+    builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
+    builder.Services.AddSingleton<IRabbitMqFactory, RabbitMqFactory>();
 
 
 

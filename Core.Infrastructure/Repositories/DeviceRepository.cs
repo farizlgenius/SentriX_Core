@@ -12,8 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repositories;
 
-public sealed class DeviceRepository(AppDbContext context) : IDeviceRepository
+public sealed class DeviceRepository(AppDbContext context, IEventPublisher publisher) : IDeviceRepository
 {
+  private readonly ModuleType module = ModuleType.device;
   public async Task<DeviceDto> CreateAsync(Domain.Entities.Device domain)
   {
     var entity = new Persistence.Entities.Device(domain);
@@ -27,6 +28,10 @@ public sealed class DeviceRepository(AppDbContext context) : IDeviceRepository
 
     if (data == null || outbox == null || save <= 0)
       throw new Exception(DbExceptionMessage.SaveRecordUnsuccessful);
+
+    await publisher.PublishAsync(
+      new Event(module, DeviceType.aero, EventType.create, domain)
+    );
 
     return new DeviceDto(
       data.Entity.id,
@@ -82,6 +87,10 @@ public sealed class DeviceRepository(AppDbContext context) : IDeviceRepository
       d.location_id,
       d.metadata
       )).ToListAsync();
+
+    await publisher.PublishAsync(
+    new Event(module, DeviceType.aero, EventType.create, items[0])
+  );
 
     return new PaginationDto<DeviceDto>(
       Page,
