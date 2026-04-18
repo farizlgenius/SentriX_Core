@@ -14,7 +14,7 @@ namespace Core.Infrastructure.Repositories;
 
 public sealed class DeviceRepository(AppDbContext context, IEventPublisher publisher) : IDeviceRepository
 {
-  private readonly ModuleType module = ModuleType.device;
+  private readonly string module = ModuleType.device.ToString();
   public async Task<DeviceDto> CreateAsync(Domain.Entities.Device domain)
   {
     var entity = new Persistence.Entities.Device(domain);
@@ -30,7 +30,7 @@ public sealed class DeviceRepository(AppDbContext context, IEventPublisher publi
       throw new Exception(DbExceptionMessage.SaveRecordUnsuccessful);
 
     await publisher.PublishAsync(
-      new Event(module, DeviceType.aero, EventType.create, domain)
+      new Event(module, DeviceType.aero.ToString(), EventType.create.ToString(), domain)
     );
 
     return new DeviceDto(
@@ -89,7 +89,7 @@ public sealed class DeviceRepository(AppDbContext context, IEventPublisher publi
       )).ToListAsync();
 
     await publisher.PublishAsync(
-    new Event(module, DeviceType.aero, EventType.create, items[0])
+    new Event(module, DeviceType.aero.ToString(), EventType.create.ToString(), "Yes, I am sending pagination data")
   );
 
     return new PaginationDto<DeviceDto>(

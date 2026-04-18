@@ -5,11 +5,11 @@ namespace Core.Domain.Entities;
 
 public sealed class Event
 {
-  public ModuleType ModuleType { get; set; }
-  public DeviceType DeviceType { get; set; }
-  public EventType EventType { get; set; }
+  public string ModuleType { get; set; }
+  public string DeviceType { get; set; }
+  public string EventType { get; set; }
   public object Metadata { get; set; } = default!;
-  public Event(ModuleType module, DeviceType device, EventType even, object metadata)
+  public Event(string module, string device, string even, object metadata)
   {
     this.ModuleType = module;
     this.DeviceType = device;
