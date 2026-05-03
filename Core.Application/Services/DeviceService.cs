@@ -32,9 +32,13 @@ public class DeviceService(IDeviceRepository repo) : IDeviceService
       dto.Name,
       dto.SerialNumber,
       dto.Mac,
+      dto.Ip,
+      dto.Port,
+      dto.Fw,
       dto.Type,
-      dto.LocationId,
-      dto.Metadata
+      dto.Status,
+      dto.SyncedAt,
+      dto.LocationId
       );
 
     return await repo.CreateAsync(domain);
@@ -73,10 +77,16 @@ public class DeviceService(IDeviceRepository repo) : IDeviceService
       dto.Name,
       dto.SerialNumber,
       dto.Mac,
+      dto.Ip,
+      dto.Port,
+      dto.Fw,
       dto.Type,
-      dto.LocationId,
-      dto.Metadata
+      dto.Status,
+      dto.SyncedAt,
+      dto.LocationId
       );
+
+
 
     return await repo.UpdateAsync(domain);
   }

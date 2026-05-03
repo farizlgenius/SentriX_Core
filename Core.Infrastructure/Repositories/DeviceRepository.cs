@@ -1,46 +1,35 @@
-using System;
-using System.Text.Json;
 using Core.Application.DTOs;
-using Core.Application.Exceptions;
 using Core.Application.Interfaces;
 using Core.Domain.Constants;
-using Core.Domain.Entities;
 using Core.Domain.Enums;
 using Core.Infrastructure.Persistence;
-using Core.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repositories;
 
-public sealed class DeviceRepository(AppDbContext context, IEventPublisher publisher) : IDeviceRepository
+public sealed class DeviceRepository(AppDbContext context) : IDeviceRepository
 {
-  private readonly string module = ModuleType.device.ToString();
   public async Task<DeviceDto> CreateAsync(Domain.Entities.Device domain)
   {
     var entity = new Persistence.Entities.Device(domain);
     var data = await context.Devices.AddAsync(entity);
-    var outbox = await context.Outboxes.AddAsync(
-      new Outbox(
-        MessageBroker.DeviceCreated,
-        JsonSerializer.Serialize(entity))
-    );
     var save = await context.SaveChangesAsync();
 
-    if (data == null || outbox == null || save <= 0)
+    if (data == null || save <= 0)
       throw new Exception(DbExceptionMessage.SaveRecordUnsuccessful);
-
-    await publisher.PublishAsync(
-      new Event(module, DeviceType.aero.ToString(), EventType.create.ToString(), domain)
-    );
 
     return new DeviceDto(
       data.Entity.id,
       data.Entity.name,
       data.Entity.serial_number,
       data.Entity.mac,
-      ((DeviceType)data.Entity.type).ToString(),
-      data.Entity.location_id,
-       data.Entity.metadata
+      data.Entity.ip,
+      data.Entity.port,
+      data.Entity.fw,
+      data.Entity.type,
+      data.Entity.status,
+      data.Entity.synced_at,
+      data.Entity.location_id
       );
   }
 
@@ -62,9 +51,13 @@ public sealed class DeviceRepository(AppDbContext context, IEventPublisher publi
       data.Entity.name,
       data.Entity.serial_number,
       data.Entity.mac,
-      ((DeviceType)data.Entity.type).ToString(),
-      data.Entity.location_id,
-       data.Entity.metadata
+      data.Entity.ip,
+      data.Entity.port,
+      data.Entity.fw,
+      data.Entity.type,
+      data.Entity.status,
+      data.Entity.synced_at,
+      data.Entity.location_id
       );
 
 
@@ -83,14 +76,15 @@ public sealed class DeviceRepository(AppDbContext context, IEventPublisher publi
       d.name,
       d.serial_number,
       d.mac,
-      ((DeviceType)d.type).ToString(),
-      d.location_id,
-      d.metadata
+      d.ip,
+      d.port,
+      d.fw,
+      d.type,
+      d.status,
+      d.synced_at,
+      d.location_id
       )).ToListAsync();
 
-    await publisher.PublishAsync(
-    new Event(module, DeviceType.aero.ToString(), EventType.create.ToString(), "Yes, I am sending pagination data")
-  );
 
     return new PaginationDto<DeviceDto>(
       Page,
@@ -156,9 +150,13 @@ public sealed class DeviceRepository(AppDbContext context, IEventPublisher publi
       data.Entity.name,
       data.Entity.serial_number,
       data.Entity.mac,
-      ((DeviceType)data.Entity.type).ToString(),
-      data.Entity.location_id,
-       data.Entity.metadata
+      data.Entity.ip,
+      data.Entity.port,
+      data.Entity.fw,
+      data.Entity.type,
+      data.Entity.status,
+      data.Entity.synced_at,
+      data.Entity.location_id
       );
   }
 }

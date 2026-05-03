@@ -5,6 +5,6 @@ namespace Core.Infrastructure.Messaging;
 
 public interface IRabbitMqFactory
 {
-  Task<IConnection> GetConnectionAsync(CancellationToken ct);
+  Task<IConnection> GetConnectionAsync(CancellationToken ct = default);
 }
 

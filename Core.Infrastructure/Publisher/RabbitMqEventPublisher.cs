@@ -7,62 +7,35 @@ using RabbitMQ.Client;
 
 namespace Core.Infrastructure.Publisher;
 
-public sealed class RabbitMqEventPublisher : IEventPublisher
+public sealed class RabbitMqEventPublisher : IMessagePublisher
 {
   private readonly IRabbitMqFactory _connection;
   public RabbitMqEventPublisher(IRabbitMqFactory connection, IRabbitMqOptions options)
   {
     _connection = connection;
   }
-  public async Task PublishAsync(Event @event, CancellationToken ct = default)
+  public async Task PublishAsync<T>(string Exchange,string RoutingKey,T Message, CancellationToken ct = default)
   {
     var connection = await _connection.GetConnectionAsync(ct);
     var channel = await connection.CreateChannelAsync(cancellationToken: ct);
 
     // Declare Exchage 
     await channel.ExchangeDeclareAsync(
-      "sentrix-exchange",
+      Exchange,
       ExchangeType.Topic,
       durable: true,
       cancellationToken: ct
     );
 
-    var routingKey = $"{@event.ModuleType}.{@event.DeviceType}.{@event.EventType}";
-    Console.WriteLine(routingKey);
 
-    var body = JsonSerializer.SerializeToUtf8Bytes(@event);
+    var body = JsonSerializer.SerializeToUtf8Bytes(Message);
 
     await channel.BasicPublishAsync(
-      exchange: "sentrix-exchange",
-      routingKey: routingKey,
+      exchange: Exchange,
+      routingKey: RoutingKey,
       body: body,
       cancellationToken: ct
     );
   }
 
-      public async Task PublishRealTimeAsync(string message, CancellationToken ct = default)
-      {
-           var connection = await _connection.GetConnectionAsync(ct);
-    var channel = await connection.CreateChannelAsync(cancellationToken: ct);
-
-    // Declare Exchage 
-    await channel.ExchangeDeclareAsync(
-      "sentrix-exchange",
-      ExchangeType.Topic,
-      durable: true,
-      cancellationToken: ct
-    );
-
-    var routingKey = "realtime";
-    Console.WriteLine(routingKey);
-
-    var body = JsonSerializer.SerializeToUtf8Bytes(message);
-
-    await channel.BasicPublishAsync(
-      exchange: "sentrix-exchange",
-      routingKey: routingKey,
-      body: body,
-      cancellationToken: ct
-    );
-      }
 }

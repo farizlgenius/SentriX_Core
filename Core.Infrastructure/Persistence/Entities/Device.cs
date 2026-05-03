@@ -7,7 +7,12 @@ public sealed class Device : BaseEntity
 {
   public string serial_number { get; set; } = string.Empty;
   public string mac { get; set; } = string.Empty;
-  public DeviceType type { get; set; } = DeviceType.unknown;
+  public string ip {get; set;} = string.Empty;
+  public int port {get; set;}
+  public string fw {get; set;} = string.Empty;
+  public DeviceSyncStatus status {get; set;}
+  public string type { get; set; } = DeviceType.unknown.ToString();
+  public DateTime synced_at {get; set;}
   public string metadata { get; set; } = string.Empty;
 
 
@@ -18,9 +23,13 @@ public sealed class Device : BaseEntity
     this.name = domain.Name;
     this.serial_number = domain.SerialNumber;
     this.mac = domain.Mac;
-    this.metadata = domain.Metadata;
+    this.ip = domain.Ip;
+    this.port = domain.Port;
+    this.fw = domain.Fw;
     this.type = domain.Type;
+    this.status = domain.Status;
     this.location_id = domain.LocationId;
+    this.synced_at = domain.SyncedAt;
     this.updated_at = DateTime.UtcNow;
     this.created_at = DateTime.UtcNow;
   }
@@ -30,10 +39,15 @@ public sealed class Device : BaseEntity
     this.name = domain.Name;
     this.serial_number = domain.SerialNumber;
     this.mac = domain.Mac;
-    this.metadata = domain.Metadata;
+    this.ip = domain.Ip;
+    this.port = domain.Port;
+    this.fw = domain.Fw;
     this.type = domain.Type;
+    this.status = domain.Status;
     this.location_id = domain.LocationId;
+    this.synced_at = domain.SyncedAt;
     this.updated_at = DateTime.UtcNow;
+    this.created_at = DateTime.UtcNow;
   }
 
 
