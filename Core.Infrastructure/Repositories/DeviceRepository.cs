@@ -159,4 +159,64 @@ public sealed class DeviceRepository(AppDbContext context) : IDeviceRepository
       data.Entity.location_id
       );
   }
+
+  public async Task<DeviceDto> UpdateIpAsync(string Mac, string Ip)
+  {
+    var entity = await context.Devices.Where(d => d.mac.Equals(Mac)).FirstOrDefaultAsync();
+    if (entity == null)
+      throw new Exception(DbExceptionMessage.RecordNotFound);
+
+    entity.UpdateIp(Ip);
+
+    var data = context.Devices.Update(entity);
+
+    var save = await context.SaveChangesAsync();
+
+    if (data == null || save <= 0)
+      throw new Exception(DbExceptionMessage.SaveRecordUnsuccessful);
+
+    return new DeviceDto(
+      data.Entity.id,
+      data.Entity.name,
+      data.Entity.serial_number,
+      data.Entity.mac,
+      data.Entity.ip,
+      data.Entity.port,
+      data.Entity.fw,
+      data.Entity.type,
+      data.Entity.status,
+      data.Entity.synced_at,
+      data.Entity.location_id
+      );
+  }
+
+      public async Task<DeviceDto> UpdatePortAsync(string Mac, int Port)
+      {
+           var entity = await context.Devices.Where(d => d.mac.Equals(Mac)).FirstOrDefaultAsync();
+    if (entity == null)
+      throw new Exception(DbExceptionMessage.RecordNotFound);
+
+    entity.UpdatePort(Port);
+
+    var data = context.Devices.Update(entity);
+
+    var save = await context.SaveChangesAsync();
+
+    if (data == null || save <= 0)
+      throw new Exception(DbExceptionMessage.SaveRecordUnsuccessful);
+
+    return new DeviceDto(
+      data.Entity.id,
+      data.Entity.name,
+      data.Entity.serial_number,
+      data.Entity.mac,
+      data.Entity.ip,
+      data.Entity.port,
+      data.Entity.fw,
+      data.Entity.type,
+      data.Entity.status,
+      data.Entity.synced_at,
+      data.Entity.location_id
+      );
+      }
 }

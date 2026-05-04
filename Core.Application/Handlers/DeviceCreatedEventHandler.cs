@@ -15,21 +15,20 @@ public sealed class DeviceCreatedEventHandler(IDeviceRepository repo) : IRabbitM
 
       public async Task HandleAsync(CreateDeviceEvent Message, CancellationToken ct = default)
       {
-            Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>");
             Console.WriteLine(Message.Name);
-            // var domain = new Device(
-            //       0,
-            //       string.Empty,
-            //       Message.SerialNumber,
-            //       Message.Mac,
-            //       Message.Ip,
-            //       Message.Port,
-            //       Message.Fw,
-            //       Message.Type,
-            //       Message.Status,
-            //       Message.SyncedAt,
-            //       Message.LocationId
-            //       );
-            // await repo.CreateAsync(domain);
+            var domain = new Device(
+                  0,
+                  string.Empty,
+                  Message.SerialNumber,
+                  Message.Mac,
+                  Message.Ip,
+                  Message.Port,
+                  Message.Fw,
+                  Message.Type,
+                  Message.Status,
+                  Message.SyncedAt,
+                  Message.LocationId
+                  );
+            await repo.CreateAsync(domain);
       }
 }
